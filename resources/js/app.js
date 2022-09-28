@@ -1,15 +1,7 @@
 import './bootstrap';
 
-var $ = require( "jquery" );
+import Alpine from 'alpinejs';
 
-var data = 'Alhamdulillah. Ajax Response.'
+window.Alpine = Alpine;
 
-$.ajax({
-    type:'GET',
-    url:'/test',
-    data: { id: 1 },
-    success:function(data) {
-        console.log(data);
-    //    $("#msg").html(data.msg);
-    }
- });
+Alpine.start();
