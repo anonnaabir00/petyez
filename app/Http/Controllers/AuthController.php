@@ -98,4 +98,18 @@ class AuthController extends Controller {
             ]);
         }
     }
+
+    public function all_users() {
+        // get specific column from user model
+        $users = User::select(
+            'uid',
+            'name',
+            'phone',
+            'email',
+            'avatar',
+            'address',
+            )->get();
+
+        return response()->json($users);
+    }
 }
