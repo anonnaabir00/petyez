@@ -8,7 +8,7 @@ var options = {
     "name": "Petyez Corp",
     "description": "Test Transaction",
     "image": "https://example.com/your_logo",
-    "order_id": "order_KMPHsCqzr9fESk", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "order_id": "order_KNansLtg6qUpXQ", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     "handler": function (response){
         alert(response.razorpay_payment_id);
         alert(response.razorpay_order_id);
