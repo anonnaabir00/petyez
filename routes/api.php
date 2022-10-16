@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\PostFilterController;
 use App\Http\Controllers\EcommerceController;
 use App\Http\Controllers\BreedsController;
 use App\Http\Controllers\ServicesController;
@@ -40,6 +41,16 @@ Route::get('/v2/breeds/{type}', [BreedsController::class, 'get_breeds_by_breed_t
 
 // Post Routes
 Route::get('/v2/posts/list', [PostsController::class, 'all_posts']);
+Route::get('/v2/posts/{uid}', [PostsController::class, 'get_post']);
+Route::get('/v2/posts/user/{author_uid}', [PostsController::class, 'get_posts_by_author']);
+Route::post('/v2/posts/insert', [PostsController::class, 'insert_post']);
+Route::post('/v2/posts/update/{uid}', [PostsController::class, 'update_post']);
+Route::post('/v2/posts/delete/{uid}', [PostsController::class, 'delete_post']);
+
+// Post Filter Routes
+Route::get('/v2/posts/filter/type/{animal_type}', [PostFilterController::class, 'animal_type']);
+Route::get('/v2/posts/filter/age/{animal_age}', [PostFilterController::class, 'animal_age']);
+
 
 // Products Route
 
