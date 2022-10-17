@@ -41,7 +41,7 @@ Route::get('/v2/breeds/{type}', [BreedsController::class, 'get_breeds_by_breed_t
 
 // Post Routes
 Route::get('/v2/posts/list', [PostsController::class, 'all_posts']);
-Route::get('/v2/posts/{uid}', [PostsController::class, 'get_post']);
+Route::get('/v2/posts/details/{uid}', [PostsController::class, 'get_post']);
 Route::get('/v2/posts/user/{author_uid}', [PostsController::class, 'get_posts_by_author']);
 Route::post('/v2/posts/insert', [PostsController::class, 'insert_post']);
 Route::post('/v2/posts/update/{uid}', [PostsController::class, 'update_post']);
