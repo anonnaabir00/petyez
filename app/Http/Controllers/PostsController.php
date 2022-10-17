@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\PostsModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller {
     // get all posts
@@ -39,8 +40,7 @@ class PostsController extends Controller {
     }
 
     public function get_post($uid){
-        $post = PostsModel::where('uid', $uid)->first();
-        $posts = PostsModel::select(
+        $post = PostsModel::where('uid', $uid)->select(
             'uid',
             'street',
             'city',
@@ -64,8 +64,8 @@ class PostsController extends Controller {
             'price',
             'tag',
             'kci_documents' 
-            )->get();
-        return response()->json($posts);    
+        )->first();
+        return response()->json($post);    
     }
 
     public function get_posts_by_author($author_uid){
@@ -74,8 +74,16 @@ class PostsController extends Controller {
     }
 
     public function insert_post(Request $request) {
+        $uid = Str::random(30);
+
+        $image = $request->file('image');
+        $image_name = $image->getClientOriginalName();
+        Storage::disk('s3')->put('posts/'.$uid.'/'.$image_name, file_get_contents($image), 's3');
+        $image_url = Storage::disk('s3')->url('images/'.$image_name);
+
+
         $post = new PostsModel();
-        $post->uid = Str::random(30);
+        $post->uid = $uid;
         $post->street = $request->street;
         $post->city = $request->city;
         $post->state = $request->state;
@@ -87,7 +95,7 @@ class PostsController extends Controller {
         $post->animal_breed = $request->animal_breed;
         $post->animal_gender = $request->animal_gender;
         $post->animal_size = $request->animal_size;
-        $post->animal_images = $request->animal_images;
+        $post->animal_images = $image_url;
         $post->animal_registered = $request->animal_registered;
         $post->animal_vaccinated = $request->animal_vaccinated;
         $post->author_name = $request->author_name;
@@ -110,6 +118,21 @@ class PostsController extends Controller {
         return response()->json($data);
     }
 
+    // public function upload_image(Request $request) {
+    //     $image = $request->file('image');
+    //     $image_name = $image->getClientOriginalName();
+    //     Storage::disk('s3')->put('images/post/'.$uid.'/'.$image_name, file_get_contents($image), 's3');
+    //     $image_url = Storage::disk('s3')->url('images/'.$image_name);
+
+    //     $data = [
+    //         'image_url' => $url,
+    //         'messege' => 'Image uploaded successfully',
+    //         'status' => 200
+    //     ];
+
+    //     return response()->json($data);
+    // }
+
     public function delete_post($uid) {
         // delete post by uid
         $post = PostsModel::where('uid',$uid)->delete();
@@ -131,4 +154,5 @@ class PostsController extends Controller {
         // create json array 
         return response()->json($post);
     }
+
 }
