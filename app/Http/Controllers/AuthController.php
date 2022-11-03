@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use App\Models\AdminModel;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -111,5 +112,64 @@ class AuthController extends Controller {
             )->get();
 
         return response()->json($users);
+    }
+
+    // Admin Auth Functions
+
+    public function create_admin_user(Request $request) {
+        $body = $request->all();
+        $admin = AdminModel::create($body);
+        $admin->password = md5($body['password']);
+        $admin->save();
+        return response()->json([
+            'message' => 'Admin User Created',
+            'status' => 200
+        ]);
+    }
+
+    public function admin_login(Request $request) {
+        $body = $request->all();
+        $email = $body['email'];
+        $password = $body['password'];
+
+        // login using email and password
+        $admin = AdminModel::where('email', $email)
+        ->where('password', $password)->first();
+
+        if($admin) {
+            $admin->isLoggedin = 'true';
+            $admin->save();
+            return response()->json([
+                'message' => 'Login Successful',
+                // 'isLoggedin' => $admin->isLoggedin,
+                'status' => 200
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Invalid Email or Password',
+                'status' => 404
+            ]);
+        }
+
+        
+    }
+
+    public function check_admin_login(Request $request) {
+        $body = $request->all();
+        $email = $body['email'];
+
+        $admin = AdminModel::where('email', $email)->first();
+        if($admin) {
+            return response()->json([
+                'message' => 'User Found',
+                'status' => 200,
+                'isLoggedin' => $admin->isLoggedin,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'User Not Found',
+                'status' => 404
+            ]);
+        }
     }
 }
