@@ -30,8 +30,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Auth Routes
 Route::post('/v2/otp/send/', [AuthController::class, 'send_otp']);
 Route::post('/v2/otp/verify/', [AuthController::class, 'verify_otp']);
-Route::post('/v2/admin/login/', [AuthController::class, 'admin_login']);
-Route::post('/v2/admin/user/create/', [AuthController::class, 'create_admin_user']);
+Route::post('/v2/admin/login', [AuthController::class, 'admin_login']);
+Route::post('/v2/admin/user/create', [AuthController::class, 'create_admin_user']);
 Route::post('/v2/admin/login/check', [AuthController::class, 'check_admin_login']);
 
 // User Routes
