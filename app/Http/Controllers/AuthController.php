@@ -141,7 +141,7 @@ class AuthController extends Controller {
             $admin->save();
             return response()->json([
                 'message' => 'Login Successful',
-                // 'isLoggedin' => $admin->isLoggedin,
+                'isLoggedin' => $admin->isLoggedin,
                 'status' => 200
             ]);
         } else {
