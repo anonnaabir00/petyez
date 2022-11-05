@@ -130,7 +130,7 @@ class AuthController extends Controller {
     public function admin_login(Request $request) {
         $body = $request->all();
         $email = $body['email'];
-        $password = $body['password'];
+        $password = md5($body['password']);
 
         // login using email and password
         $admin = AdminModel::where('email', $email)
